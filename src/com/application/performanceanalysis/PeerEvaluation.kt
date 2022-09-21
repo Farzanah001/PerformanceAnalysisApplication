@@ -20,11 +20,12 @@ class PeerEvaluation {
 
         var changeDateFormat=SimpleDateFormat("dd-MM-yyyy")
         userloop@for(i in userDeets){
+            var userDOJ = changeDateFormat.parse(i.dateOfJoining)
             cycleloop@for(j in SelfEvaluation.cycles) {
-                var userDOJ = changeDateFormat.parse(i.dateOfJoining)
+
                 //println(userDOJ)
                 var cycleStartingDate = changeDateFormat.parse(j.cycleStartingFrom)
-               // println(cycleStartingDate)
+                //println(cycleStartingDate)
                 //var cycleEndingDate=changeDateFormat.parse(j.cycleEndingOn)
                 val dateDiff=userDOJ.compareTo(cycleStartingDate)
                // println(dateDiff)
