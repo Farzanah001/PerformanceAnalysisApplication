@@ -7,9 +7,10 @@ object MainManagement {
     var scan= Scanner(System.`in`)
     @JvmStatic
     fun runApplication() {
-        //val self=SelfEvaluation()
         val peer=PeerEvaluation()
-        //val data=DataManagement()
+        SelfEvaluation.addCycles()
+        peer.addUsers()
+
         do{
             println("PERFORMANCE ANALYSIS")
             println("--------------------")
@@ -21,14 +22,12 @@ object MainManagement {
 
             when(choice){
                1->{
-                   SelfEvaluation.addCycles()
-                   SelfEvaluation.viewCycles()
-                   //println(SelfEvaluation.cycles.size)
+
+
                }
                2->{
-                   peer.addUsers()
-                   //println(peer.userDeets.size)
-                   peer.viewUsers()
+                   //peer.viewRelevantCycles()
+                   peer.viewUsers(peer.userDeets)
                }
                3-> {
                    println("Thank You!")

@@ -4,8 +4,8 @@ class DataStorageClasses {
 }
 data class UserData(var userId:Int,var name:String,var dateOfJoining:String)
 
-data class Goals(var userId: Int,var goalName:ArrayList<String>,var weightage:ArrayList<Int>,var rating:ArrayList<Int>){
-   var goalsList=ArrayList<Goals>()
+data class Goals(var userId: Int,var goalName:ArrayList<String>,var weightage:ArrayList<Int>,var rating:Int)
+//var userGoalsMap=ArrayList<Goals>()
 //    fun add(){
 //       userId=101
 //       goalName.add("goal 1")
@@ -17,9 +17,9 @@ data class Goals(var userId: Int,var goalName:ArrayList<String>,var weightage:Ar
 //       rating.add(3)
 //       rating.add(5)
 //
-//        goalsList.add()
+//        userGoalsMap.add()
 //   }
-}
+
 data class Assignments(var userId: Int,var assignmentName:String,var weightage: Int,var rating: Int)
 data class Projects(var userId: Int,var projectName:String,var weightage: Int,var rating: Int)
 

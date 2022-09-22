@@ -3,6 +3,10 @@ package com.application.performanceanalysis
 object SelfEvaluation {
     var cycles=ArrayList<CycleData>()
     fun viewCycles() {
+
+        //display only the cycle that is applicable for this user(Akon)
+
+        //call displayRatingFactors()
         for(i in cycles){
             println("\nCycle Name:"+i.cycleName+"\nCycle Starting Date:"+i.cycleStartingFrom+"\nCycle Ending Date:"+i.cycleEndingOn)
         }
@@ -17,5 +21,19 @@ object SelfEvaluation {
         cycles.add(CycleData("Cycle 6","01-01-2021","31-12-2021",false,false,true))
     }
 
+    fun displayRatingFactors(){
+        //display all the rating factors that are enabled for that cycle
+        //call getSelfRating()
+
+    }
+
+    fun getSelfRating(){
+        //get rating inputs
+        //call calculateFinalScore()
+    }
+
+    fun calculateFinalScore(){
+
+    }
 
 }
