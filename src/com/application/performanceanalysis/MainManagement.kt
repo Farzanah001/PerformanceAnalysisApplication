@@ -22,7 +22,7 @@ object MainManagement {
             println("2. Peer Evaluation")
             println("3. Exit")
             println("\n\nEnter Your Choice:")
-            var choice=scan.nextInt()
+            val choice=scan.nextInt()
 
             when(choice){
                1->{
@@ -44,6 +44,4 @@ object MainManagement {
     }
 }
 
-fun main(){
-    MainManagement.runApplication()
-}
+fun main() = MainManagement.runApplication()

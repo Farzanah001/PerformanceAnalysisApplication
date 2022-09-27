@@ -7,8 +7,9 @@ import kotlin.collections.HashMap
 
 object PeerEvaluation {
     var userDeets=ArrayList<UserData>()
-    var scan=Scanner(System.`in`)
+    private var scan=Scanner(System.`in`)
     //var rate=RatingFactors()
+    var totalPeerRating:Int=0
 
     @JvmStatic
     fun addUsers() {
@@ -32,7 +33,7 @@ object PeerEvaluation {
     private fun displayRelevantCycles(userDeets: ArrayList<UserData>, cycles: ArrayList<CycleData>, userId:Int) {
         var changeDateFormat=SimpleDateFormat("dd-MM-yyyy")
         var userDOJ: Date?=null
-        var cycleStartingDate:Date?=null
+        var cycleStartingDate:Date
         var userCycleMap=HashMap<Int,String>()
         for(i in userDeets){
             if(userId==i.userId)
@@ -77,11 +78,49 @@ object PeerEvaluation {
         //get the rating for all individual goals/Assignments and Projects
         //do not get these factors for the cycles that disables certain factors (like a cycle disables goals and projects, only take assignments into account)
         //call calculateFinalScore()
-
-
+        for((i,e) in SelfEvaluation.cycles.withIndex()){
+            if(e.cycleName == currentCycleName){
+                if(e.isGoalsEnabled){
+                    inner1@for(j in userDeets){
+                        for(k in userDeets[i-1].goals.goalName) {
+                            println(k)
+                            trackTotalPeerRating()
+                        }
+                        break@inner1
+                    }
+                }
+                if(e.isAssignmentsEnabled){
+                    inner2@for(j in userDeets){
+                        for(k in userDeets[i-1].assignments.assignmentName) {
+                            println(k)
+                            trackTotalPeerRating()
+                        }
+                        break@inner2
+                    }
+                }
+                if(e.isProjectsEnabled){
+                    inner3@for(j in userDeets){
+                        for(k in userDeets[i-1].projects.projectName) {
+                            println(k)
+                            trackTotalPeerRating()
+                        }
+                        break@inner3
+                    }
+                }
+            }
+        }
     }
 
-    fun calculateFinalScore(){
+    private fun trackTotalPeerRating(){
+        println("Give Your Rating(1-5):")
+        var getRating= scan.nextInt()
+        totalPeerRating +=getRating
+        println("Total Rating:${totalPeerRating}")
+
+        calculateFinalScore(totalPeerRating)
+    }
+
+    private fun calculateFinalScore(totalPeerRating:Int){
 
     }
 

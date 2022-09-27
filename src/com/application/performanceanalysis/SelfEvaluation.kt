@@ -6,8 +6,8 @@ import kotlin.collections.ArrayList
 
 object SelfEvaluation {
     var cycles=ArrayList<CycleData>()
-    var scan=Scanner(System.`in`)
-    var totalRating:Int=0
+    private var scan=Scanner(System.`in`)
+    var totalSelfRating:Int=0
     //var peer=PeerEvaluation()
 
     @JvmStatic
@@ -25,25 +25,23 @@ object SelfEvaluation {
 
         //display only the cycle that is applicable for this user(Akon)
 
-        var changeDateFormat = SimpleDateFormat("dd-MM-yyyy")
+        val changeDateFormat = SimpleDateFormat("dd-MM-yyyy")
         var cycleStartingDate: Date
 
         //var individualUserPair = Pair<Int, String>(0, "")
-        var userDOJ: Date = changeDateFormat.parse(PeerEvaluation.userDeets[0].dateOfJoining)
+        val userDOJ: Date = changeDateFormat.parse(PeerEvaluation.userDeets[0].dateOfJoining)
         println("\nCycle Number\tCycle Name")
         for ((i, e) in cycles.withIndex()) {
             cycleStartingDate = changeDateFormat.parse(e.cycleStartingFrom)
-            var dateDiff = userDOJ?.compareTo(cycleStartingDate)
-            if (dateDiff != null) {
-                if (dateDiff < 0) {
-                    println("${i + 1}\t\t\t\t${e.cycleName}")
+            val dateDiff = userDOJ.compareTo(cycleStartingDate)
+            if (dateDiff < 0) {
+                println("${i + 1}\t\t\t\t${e.cycleName}")
 //                    var individualUserId = individualUserPair.copy(first = PeerEvaluation.userDeets[0].userId)
 //                    var individualUserCycleName = individualUserPair.copy(second = e.cycleName)
-                }
             }
         }
         println("Enter the Cycle Number to Start Rating")
-        var selfCycleRatingNumber=scan.nextInt()
+        val selfCycleRatingNumber=scan.nextInt()
 //    println("$individualUserPair")
         displayRatingFactors(selfCycleRatingNumber)
     }
@@ -51,7 +49,7 @@ object SelfEvaluation {
     private fun displayRatingFactors(selfCycleRatingNumber:Int){
         //display all the rating factors that are enabled for that cycle
         //call getSelfRating()
-        var currentCycleName:String="";
+        var currentCycleName =""
         if(selfCycleRatingNumber==1) currentCycleName="Cycle 1"
         else if(selfCycleRatingNumber==2) currentCycleName="Cycle 2"
         else if(selfCycleRatingNumber==3) currentCycleName="Cycle 3"
@@ -101,13 +99,15 @@ object SelfEvaluation {
         }
     }
 
-    private fun trackTotalRating(){
+    fun trackTotalRating(){
         println("Give Your Rating(1-5):")
-        var getRating=scan.nextInt()
-        totalRating+=getRating
-        println("Total Rating:$totalRating")
+        val getRating=scan.nextInt()
+        totalSelfRating+=getRating
+        println("Total Rating:$totalSelfRating")
+
+        calculateFinalScore(totalSelfRating)
     }
-    fun calculateFinalScore(){
+    private fun calculateFinalScore(totalSelfRating:Int){
 
     }
 
