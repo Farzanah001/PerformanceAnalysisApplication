@@ -53,11 +53,10 @@ object PeerEvaluation {
         }
         println("Enter the Cycle Number to Start Rating:")
         var currentCycleNumber=scan.nextInt()
-
-        showRatingFactors(currentCycleNumber)
+        showRatingFactors(currentCycleNumber,userCycleMap)
     }
 
-    private fun showRatingFactors(currentCycleNumber: Int) {
+    private fun showRatingFactors(currentCycleNumber: Int, userCycleMap: HashMap<Int, String>) {
         //shows the rating factors like goals, assignments, and projects and its weightage
         //call getUserRating()
         var currentCycleName:String="";
@@ -71,7 +70,15 @@ object PeerEvaluation {
             println("Invalid Input!! Enter Valid Input.")
             viewUsers(userDeets)
         }
-        getUserRating(currentCycleName)
+        if(userCycleMap.containsValue(currentCycleName)) {
+            currentCycleName=""
+            println("Oops! Looks like the Cycle Number You have entered is not Available for the User!")
+            println("Please Enter a Cycle Number that is Available for the selected User")
+            viewUsers(userDeets)
+        }
+        else{
+            getUserRating(currentCycleName)
+        }
     }
 
     private fun getUserRating(currentCycleName:String){
@@ -114,10 +121,17 @@ object PeerEvaluation {
     private fun trackTotalPeerRating(){
         println("Give Your Rating(1-5):")
         var getRating= scan.nextInt()
-        totalPeerRating +=getRating
-        println("Total Rating:${totalPeerRating}")
+        if(getRating<=0||getRating>5){
+            println("You can only give ratings from 1 to 5. Please give a Valid Rating!")
+            trackTotalPeerRating()
+        }
 
-        calculateFinalScore(totalPeerRating)
+        else {
+            totalPeerRating += getRating
+            println("Total Rating:${totalPeerRating}")
+
+            calculateFinalScore(totalPeerRating)
+        }
     }
 
     private fun calculateFinalScore(totalPeerRating:Int){

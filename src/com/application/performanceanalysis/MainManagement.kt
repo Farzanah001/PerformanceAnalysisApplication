@@ -16,18 +16,23 @@ object MainManagement {
         RatingFactors.addProjectsData()
 
         do{
+            var choice=0
             println("PERFORMANCE ANALYSIS")
             println("--------------------")
             println("1. Self Evaluation")
             println("2. Peer Evaluation")
             println("3. Exit")
-            println("\n\nEnter Your Choice:")
-            val choice=scan.nextInt()
+            try {
+                println("\n\nEnter Your Choice:")
+                choice = scan.nextInt()
+            }catch (e:InputMismatchException){
+                println("Enter Valid Input. Choose a Choice Number from the Menu Displayed (1-3)")
+                runApplication()
+            }
 
             when(choice){
                1->{
                     SelfEvaluation.viewCycles()
-
                }
                2->{
                    PeerEvaluation.viewUsers(PeerEvaluation.userDeets)
