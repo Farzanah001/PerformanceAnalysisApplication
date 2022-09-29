@@ -7,8 +7,7 @@ object MainManagement {
     var scan= Scanner(System.`in`)
     @JvmStatic
     fun runApplication() {
-        //val peer=PeerEvaluation()
-        //val rate=RatingFactors()
+
         SelfEvaluation.addCycles()
         PeerEvaluation.addUsers()
         RatingFactors.addGoalsData()
@@ -35,7 +34,7 @@ object MainManagement {
                     SelfEvaluation.viewCycles()
                }
                2->{
-                   PeerEvaluation.viewUsers(PeerEvaluation.userDeets)
+                   PeerEvaluation.viewUsers()
                }
                3-> {
                    println("Thank You!")

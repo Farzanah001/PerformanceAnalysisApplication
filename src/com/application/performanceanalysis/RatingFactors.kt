@@ -171,6 +171,4 @@ object RatingFactors {
         akonProjectWeightageList.add(50)
 
     }
-
-
 }
