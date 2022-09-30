@@ -15,23 +15,25 @@ object MainManagement {
         RatingFactors.addProjectsData()
 
         do{
+            var rawChoice=""
             var choice=0
             println("PERFORMANCE ANALYSIS")
             println("--------------------")
             println("1. Self Evaluation")
             println("2. Peer Evaluation")
             println("3. Exit")
+            println("\n\nEnter Your Choice:")
+            rawChoice = scan.next()
             try {
-                println("\n\nEnter Your Choice:")
-                choice = scan.nextInt()
-            }catch (e:InputMismatchException){
+                choice=rawChoice.toInt()
+            }catch (e:Exception){
                 println("Enter Valid Input. Choose a Choice Number from the Menu Displayed (1-3)")
                 runApplication()
             }
 
             when(choice){
                1->{
-                    SelfEvaluation.viewCycles()
+                   SelfEvaluation.viewCycles()
                }
                2->{
                    PeerEvaluation.viewUsers()
@@ -42,9 +44,10 @@ object MainManagement {
                }
                else->{
                    println("Invalid Input")
+                   runApplication()
                }
             }
-        }while(choice<=2)
+        }while(choice in 1..3)
     }
 }
 
