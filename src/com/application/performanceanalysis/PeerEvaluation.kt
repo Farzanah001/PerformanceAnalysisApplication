@@ -1,5 +1,6 @@
 package com.application.performanceanalysis
 
+import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -56,12 +57,23 @@ object PeerEvaluation {
     }
 
     fun viewUsers() {
+        var userId=0
         println("User Id\tUser Name")
         for (i in 1 until userDeets.size) {
             println("${userDeets[i].userId}\t\t${userDeets[i].name}")
         }
         println("\n\nEnter the User ID of the User to Review Them:")
-        var userId = scan.nextInt()
+        var id = scan.next()
+        try{
+            userId=id.toInt()
+        }catch (e:InputMismatchException){
+            println("Enter Valid ID. Enter an ID from the given list.")
+            viewUsers()
+        }
+        catch (e:Exception){
+            println("Unknown Exception. Please Try Again with Appropriate Inputs.")
+            viewUsers()
+        }
         displayRelevantCycles(userDeets, SelfEvaluation.cycles, userId)
     }
 
@@ -129,6 +141,12 @@ object PeerEvaluation {
                                 println("---PROJECTS---")
                                 calculateProjectsTotalAverage(element)
                             }
+                            if(!(element.isGoalsEnabled) && !(element.isAssignmentsEnabled) && !(element.isProjectsEnabled)){
+                                println("No Rating Modules are Enabled for this Cycle! Please choose any other Cycle to Rate.")
+                                //MainManagement.runApplication()
+                                break
+                            }
+                            calculateFinalScore()
                         }
                         else{
                             if (element.isGoalsEnabled) {
@@ -143,13 +161,17 @@ object PeerEvaluation {
                                 println("---PROJECTS---")
                                 calculateProjectsTotalAverageWithNA(element)
                             }
+                            if(!(element.isGoalsEnabled) && !(element.isAssignmentsEnabled) && !(element.isProjectsEnabled)){
+                                println("No Rating Modules are Enabled for this Cycle! Please choose any other Cycle to Rate.")
+                                //MainManagement.runApplication()
+                                break
+                            }
                             calculateFinalScoreWithNA()
                         }
                     }
                 }
             }
         }
-        calculateFinalScore()
     }
 
     private fun calculateGoalsTotalAverageWithNA(element: CycleData) {

@@ -83,7 +83,7 @@ object SelfEvaluation {
         getSelfRating(currentCycleName)
     }
 
-    fun getSelfRating(currentCycleName:String){
+    private fun getSelfRating(currentCycleName:String){
         //get rating inputs
         //call calculateFinalScore()
         for(element in cycles){
@@ -101,6 +101,11 @@ object SelfEvaluation {
                         println("---PROJECTS---")
                         calculateProjectsTotalAverage(element)
                     }
+                    if(!(element.isGoalsEnabled) && !(element.isAssignmentsEnabled) && !(element.isProjectsEnabled)){
+                        println("No Rating Modules are Enabled for this Cycle! Please choose any other Cycle to Rate.")
+                        //MainManagement.runApplication()
+                        break
+                    }
                     calculateFinalScore()
                 }
                 else{
@@ -115,6 +120,11 @@ object SelfEvaluation {
                     if (element.isProjectsEnabled) {
                         println("---PROJECTS---")
                         calculateProjectsTotalAverageWithNA(element)
+                    }
+                    if(!(element.isGoalsEnabled) && !(element.isAssignmentsEnabled) && !(element.isProjectsEnabled)){
+                        println("No Rating Modules are Enabled for this Cycle! Please choose any other Cycle to Rate.")
+                        //MainManagement.runApplication()
+                        break
                     }
                     calculateFinalScoreWithNA()
                 }
