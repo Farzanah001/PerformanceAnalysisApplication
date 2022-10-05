@@ -1,6 +1,7 @@
 package com.application.performanceanalysis
 
 import java.lang.Exception
+import java.lang.NumberFormatException
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -8,47 +9,59 @@ import kotlin.collections.HashMap
 
 object PeerEvaluation {
     var userDeets = ArrayList<UserData>()
+    var availableUserMap = HashMap<Int, String>()
+
     private var scan = Scanner(System.`in`)
-    var set=SetValues()
+    var set = SetValues()
 
-    var peerCycleRatingNumber:Int=0
+    var peerCycleRatingNumber: Int = 0
 
-    var goalsTotalAverage=0f
-    var assignmentsTotalAverage=0f
-    var projectsTotalAverage=0f
-    var finalPeerRatingScore:Float=0f
+    var goalsTotalAverage = 0f
+    var assignmentsTotalAverage = 0f
+    var projectsTotalAverage = 0f
+    var finalPeerRatingScore: Float = 0f
 
-    var goalsNACount=0
-    var assignmentsNACount=0
-    var projectsNACount=0
+    var goalsNACount = 0
+    var assignmentsNACount = 0
+    var projectsNACount = 0
 
     @JvmStatic
     fun addUsers() {
-        userDeets.add(UserData(101, "Akon", "20-01-2016",
+        userDeets.add(
+            UserData(
+                101, "Akon", "20-01-2016",
                 Goals(RatingFactors.akonGoalsList, RatingFactors.akonGoalWeightageList, 0),
                 Assignments(RatingFactors.akonAssignmentsList, RatingFactors.akonAssignmentWeightageList, 0),
                 Projects(RatingFactors.akonProjectList, RatingFactors.akonProjectWeightageList, 0)
             )
         )
-        userDeets.add(UserData(102, "Bkon", "06-06-2019",
+        userDeets.add(
+            UserData(
+                102, "Bkon", "06-06-2019",
                 Goals(RatingFactors.bkonGoalsList, RatingFactors.bkonGoalWeightageList, 0),
                 Assignments(RatingFactors.bkonAssignmentsList, RatingFactors.bkonAssignmentWeightageList, 0),
                 Projects(RatingFactors.bkonProjectList, RatingFactors.bkonProjectWeightageList, 0)
             )
         )
-        userDeets.add(UserData(103, "Ckon", "20-07-2017",
+        userDeets.add(
+            UserData(
+                103, "Ckon", "20-07-2017",
                 Goals(RatingFactors.ckonGoalsList, RatingFactors.ckonGoalWeightageList, 0),
                 Assignments(RatingFactors.ckonAssignmentsList, RatingFactors.ckonAssignmentWeightageList, 0),
                 Projects(RatingFactors.ckonProjectList, RatingFactors.ckonProjectWeightageList, 0)
             )
         )
-        userDeets.add(UserData(104, "Dkon", "01-09-2020",
+        userDeets.add(
+            UserData(
+                104, "Dkon", "01-09-2020",
                 Goals(RatingFactors.dkonGoalsList, RatingFactors.dkonGoalWeightageList, 0),
                 Assignments(RatingFactors.dkonAssignmentsList, RatingFactors.dkonAssignmentWeightageList, 0),
                 Projects(RatingFactors.dkonProjectList, RatingFactors.dkonProjectWeightageList, 0)
             )
         )
-        userDeets.add(UserData(105, "Ekon", "09-08-2018",
+        userDeets.add(
+            UserData(
+                105, "Ekon", "09-08-2018",
                 Goals(RatingFactors.ekonGoalsList, RatingFactors.ekonGoalWeightageList, 0),
                 Assignments(RatingFactors.ekonAssignmentsList, RatingFactors.ekonAssignmentWeightageList, 0),
                 Projects(RatingFactors.ekonProjectList, RatingFactors.ekonProjectWeightageList, 0)
@@ -57,24 +70,29 @@ object PeerEvaluation {
     }
 
     fun viewUsers() {
-        var userId=0
+        var userId = 0
         println("User Id\tUser Name")
         for (i in 1 until userDeets.size) {
             println("${userDeets[i].userId}\t\t${userDeets[i].name}")
+            availableUserMap.put(userDeets[i].userId, userDeets[i].name)
         }
         println("\n\nEnter the User ID of the User to Review Them:")
         var id = scan.next()
-        try{
-            userId=id.toInt()
-        }catch (e:InputMismatchException){
+        try {
+            userId = id.toInt()
+        } catch (e: InputMismatchException) {
             println("Enter Valid ID. Enter an ID from the given list.")
             viewUsers()
-        }
-        catch (e:Exception){
+        } catch (e: Exception) {
             println("Unknown Exception. Please Try Again with Appropriate Inputs.")
             viewUsers()
         }
-        displayRelevantCycles(userDeets, SelfEvaluation.cycles, userId)
+        if (availableUserMap.containsKey(userId)) {
+            displayRelevantCycles(userDeets, SelfEvaluation.cycles, userId)
+        } else {
+            println("Enter a Valid User ID")
+            viewUsers()
+        }
     }
 
     private fun displayRelevantCycles(userDeets: ArrayList<UserData>, cycles: ArrayList<CycleData>, userId: Int) {
@@ -115,7 +133,7 @@ object PeerEvaluation {
         else if (currentCycleNumber == 6) currentCycleName = "Cycle 6"
         else {
             println("Invalid Input!! Enter Valid Input.")
-            displayRelevantCycles(userDeets,SelfEvaluation.cycles,userId)
+            displayRelevantCycles(userDeets, SelfEvaluation.cycles, userId)
         }
         getUserRating(currentCycleName, userId)
     }
@@ -124,11 +142,11 @@ object PeerEvaluation {
         //get the rating for all individual goals/Assignments and Projects
         //do not get these factors for the cycles that disables certain factors (like a cycle disables goals and projects, only take assignments into account)
         //call calculateFinalScore()
-        for(i in userDeets){
-            if(i.userId==userId){
-                for(element in SelfEvaluation.cycles){
-                    if(element.cycleName == currentCycleName) {
-                        if(!(element.isNAEnabled)) {
+        for (i in userDeets) {
+            if (i.userId == userId) {
+                for (element in SelfEvaluation.cycles) {
+                    if (element.cycleName == currentCycleName) {
+                        if (!(element.isNAEnabled)) {
                             if (element.isGoalsEnabled) {
                                 println("---GOALS---")
                                 calculateGoalsTotalAverage(element)
@@ -141,14 +159,13 @@ object PeerEvaluation {
                                 println("---PROJECTS---")
                                 calculateProjectsTotalAverage(element)
                             }
-                            if(!(element.isGoalsEnabled) && !(element.isAssignmentsEnabled) && !(element.isProjectsEnabled)){
+                            if (!(element.isGoalsEnabled) && !(element.isAssignmentsEnabled) && !(element.isProjectsEnabled)) {
                                 println("No Rating Modules are Enabled for this Cycle! Please choose any other Cycle to Rate.")
                                 //MainManagement.runApplication()
                                 break
                             }
                             calculateFinalScore()
-                        }
-                        else{
+                        } else {
                             if (element.isGoalsEnabled) {
                                 println("---GOALS---")
                                 calculateGoalsTotalAverageWithNA(element)
@@ -161,7 +178,7 @@ object PeerEvaluation {
                                 println("---PROJECTS---")
                                 calculateProjectsTotalAverageWithNA(element)
                             }
-                            if(!(element.isGoalsEnabled) && !(element.isAssignmentsEnabled) && !(element.isProjectsEnabled)){
+                            if (!(element.isGoalsEnabled) && !(element.isAssignmentsEnabled) && !(element.isProjectsEnabled)) {
                                 println("No Rating Modules are Enabled for this Cycle! Please choose any other Cycle to Rate.")
                                 //MainManagement.runApplication()
                                 break
@@ -174,30 +191,42 @@ object PeerEvaluation {
         }
     }
 
+    private fun getRatingInput(): Int {
+        println("Give Your Rating(1-5) Or 0 for \"Not Applicable\"):")
+        var getRawRating = SelfEvaluation.scan.next()
+        var getRating = 0
+        try {
+            getRating = getRawRating.toInt()
+            while (getRating < 0 || getRating > 5) {
+                println("Enter Only Values Ranging from 0 to 5")
+                getRating = SelfEvaluation.scan.next().toInt()
+            }
+        } catch (e: InputMismatchException) {
+            println("Enter Valid Input")
+        } catch (e: NumberFormatException) {
+            println("Character/String Inputs are Not Valid. Enter a Rating from 1-5")
+        }
+        return getRating
+    }
+
     private fun calculateGoalsTotalAverageWithNA(element: CycleData) {
         var tempWeightageSumOfGoals = 0f
-        var totalSelfRating=0f
+        var totalSelfRating = 0f
         //var goalsTotalAverage = 0f
 
         if (element.isWeightageEnabled) {
-            for(j in 0 until userDeets.size) {
+            for (j in 0 until userDeets.size) {
                 println("Current User Id${userDeets[j].userId}")
                 for (k in userDeets[j].goals.goalName) {
                     println(k)
-                    println("Give Your Rating(1-5) Or 0 for \"Not Applicable\"):")
-                    var getRating= scan.nextInt()
-                    if(getRating==0){
+                    var getRating = getRatingInput()
+                    if (getRating == 0) {
                         goalsNACount++
-                    }
-                    else if(getRating in 1..5) {
+                    } else {
                         var tempWeightage = userDeets[j].goals.weightage[j]
                         tempWeightageSumOfGoals += tempWeightage
                         var weightageProduct = getRating.times(tempWeightage)
                         totalSelfRating += weightageProduct
-                    }
-                    else{
-                        println("Enter Only Values Ranging from 0-5")
-                        calculateGoalsTotalAverageWithNA(element)
                     }
                 }
                 goalsTotalAverage = totalSelfRating / tempWeightageSumOfGoals
@@ -205,20 +234,14 @@ object PeerEvaluation {
                 break
             }
         } else {
-            for(j in 0 until userDeets.size) {
+            for (j in 0 until userDeets.size) {
                 for (k in userDeets[j].goals.goalName) {
                     println(k)
-                    println("Give Your Rating(1-5) Or 0 for \"Not Applicable\"):")
-                    val getRating = scan.nextInt()
-                    if(getRating==0){
+                    var getRating = getRatingInput()
+                    if (getRating == 0) {
                         goalsNACount++
-                    }
-                    else if(getRating in 1..5) {
+                    } else {
                         totalSelfRating += getRating
-                    }
-                    else{
-                        println("Enter Only Values Ranging from 0-5")
-                        calculateGoalsTotalAverageWithNA(element)
                     }
                 }
                 var totalNoOfGoals = (userDeets[j].goals.goalName.size)
@@ -231,26 +254,20 @@ object PeerEvaluation {
 
     private fun calculateAssignmentsTotalAverageWithNA(element: CycleData) {
         var tempWeightageSumOfAssignments = 0f
-        var totalPeerRating=0f
+        var totalPeerRating = 0f
         if (element.isWeightageEnabled) {
-            for(j in 0 until userDeets.size) {
+            for (j in 0 until userDeets.size) {
                 println("Current User Id${userDeets[j].userId}")
                 for (k in userDeets[j].assignments.assignmentName) {
                     println(k)
-                    println("Give Your Rating(1-5) Or 0 for \"Not Applicable\"):")
-                    var getRating= scan.nextInt()
-                    if(getRating==0){
+                    var getRating = getRatingInput()
+                    if (getRating == 0) {
                         assignmentsNACount++
-                    }
-                    else if(getRating in 1..5) {
+                    } else {
                         var tempWeightage = userDeets[j].assignments.weightage[j]
                         tempWeightageSumOfAssignments += tempWeightage
                         var weightageProduct = getRating.times(tempWeightage)
                         totalPeerRating += weightageProduct
-                    }
-                    else{
-                        println("Enter Only Values Ranging from 0-5")
-                        calculateGoalsTotalAverageWithNA(element)
                     }
                 }
                 assignmentsTotalAverage = totalPeerRating / tempWeightageSumOfAssignments
@@ -258,20 +275,14 @@ object PeerEvaluation {
                 break
             }
         } else {
-            for(j in 0 until userDeets.size) {
+            for (j in 0 until userDeets.size) {
                 for (k in userDeets[j].assignments.assignmentName) {
                     println(k)
-                    println("Give Your Rating(1-5) Or 0 for \"Not Applicable\"):")
-                    val getRating = scan.nextInt()
-                    if(getRating==0){
+                    var getRating = getRatingInput()
+                    if (getRating == 0) {
                         assignmentsNACount++
-                    }
-                    else if(getRating in 1..5) {
+                    } else {
                         totalPeerRating += getRating
-                    }
-                    else{
-                        println("Enter Only Values Ranging from 0-5")
-                        calculateAssignmentsTotalAverageWithNA(element)
                     }
                 }
                 var totalNoOfAssignments = (userDeets[j].assignments.assignmentName.size)
@@ -284,27 +295,21 @@ object PeerEvaluation {
 
     private fun calculateProjectsTotalAverageWithNA(element: CycleData) {
         var tempWeightageSumOfProjects = 0f
-        var totalPeerRating=0f
+        var totalPeerRating = 0f
 
         if (element.isWeightageEnabled) {
-            for(j in 0 until userDeets.size) {
+            for (j in 0 until userDeets.size) {
                 println("Current User Id${userDeets[j].userId}")
                 for (k in userDeets[j].projects.projectName) {
                     println(k)
-                    println("Give Your Rating(1-5) Or 0 for \"Not Applicable\"):")
-                    var getRating= scan.nextInt()
-                    if(getRating==0){
+                    var getRating = getRatingInput()
+                    if (getRating == 0) {
                         projectsNACount++
-                    }
-                    else if(getRating in 1..5) {
+                    } else {
                         var tempWeightage = userDeets[j].assignments.weightage[j]
                         tempWeightageSumOfProjects += tempWeightage
                         var weightageProduct = getRating.times(tempWeightage)
                         totalPeerRating += weightageProduct
-                    }
-                    else{
-                        println("Enter Only Values Ranging from 0-5")
-                        calculateGoalsTotalAverageWithNA(element)
                     }
                 }
                 projectsTotalAverage = totalPeerRating / tempWeightageSumOfProjects
@@ -312,20 +317,14 @@ object PeerEvaluation {
                 break
             }
         } else {
-            for(j in 0 until userDeets.size) {
+            for (j in 0 until userDeets.size) {
                 for (k in userDeets[j].projects.projectName) {
                     println(k)
-                    println("Give Your Rating(1-5) Or 0 for \"Not Applicable\"):")
-                    val getRating = scan.nextInt()
-                    if(getRating==0){
+                    var getRating = getRatingInput()
+                    if (getRating == 0) {
                         projectsNACount++
-                    }
-                    else if(getRating in 1..5) {
+                    } else {
                         totalPeerRating += getRating
-                    }
-                    else{
-                        println("Enter Only Values Ranging from 0-5")
-                        calculateAssignmentsTotalAverageWithNA(element)
                     }
                 }
                 var totalNoOfProjects = (userDeets[j].projects.projectName.size)
@@ -339,44 +338,29 @@ object PeerEvaluation {
 
     private fun calculateProjectsTotalAverage(element: CycleData) {
         var tempWeightageSumOfProjects = 0f
-        var totalPeerRating=0f
+        var totalPeerRating = 0f
         if (element.isWeightageEnabled) {
-            for(j in 0 until userDeets.size) {
+            for (j in 0 until userDeets.size) {
                 for (k in userDeets[j].projects.projectName) {
                     println(k)
-                    println("Give Your Rating(1-5):")
-                    val getRating = scan.nextInt()
-                    if(getRating<=0||getRating>5){
-                        println("You can only give ratings from 1 to 5. Please give a Valid Rating!")
-                        calculateProjectsTotalAverage(element)
-                    }
-                    else {
-                        var tempWeightage = userDeets[j].projects.weightage[j]
-                        tempWeightageSumOfProjects += tempWeightage
-                        var weightageProduct = getRating.times(tempWeightage)
-                        totalPeerRating += weightageProduct
-                    }
+                    var getRating = getRatingInput()
+                    var tempWeightage = userDeets[j].projects.weightage[j]
+                    tempWeightageSumOfProjects += tempWeightage
+                    var weightageProduct = getRating.times(tempWeightage)
+                    totalPeerRating += weightageProduct
                 }
                 projectsTotalAverage = totalPeerRating / tempWeightageSumOfProjects
                 println("Total Projects Rating:${projectsTotalAverage}")
                 break
             }
-        }
-        else{
-            for(j in 0 until userDeets.size) {
+        } else {
+            for (j in 0 until userDeets.size) {
                 for (k in userDeets[j].projects.projectName) {
                     println(k)
-                    println("Give Your Rating(1-5):")
-                    val getRating = scan.nextInt()
-                    if(getRating<=0||getRating>5){
-                        println("You can only give ratings from 1 to 5. Please give a Valid Rating!")
-                        calculateProjectsTotalAverage(element)
-                    }
-                    else {
-                        totalPeerRating += getRating
-                    }
+                    var getRating = getRatingInput()
+                    totalPeerRating += getRating
                 }
-                var totalNoOfProjects=userDeets[j].projects.projectName.size
+                var totalNoOfProjects = userDeets[j].projects.projectName.size
                 projectsTotalAverage = (totalPeerRating / totalNoOfProjects).toFloat()
                 println("Total Projects Rating:${projectsTotalAverage}")
                 break
@@ -385,46 +369,31 @@ object PeerEvaluation {
     }
 
     private fun calculateAssignmentsTotalAverage(element: CycleData) {
-        var tempWeightageSumOfAssignments =0f
-        var totalPeerRating=0f
+        var tempWeightageSumOfAssignments = 0f
+        var totalPeerRating = 0f
         //var assignmentsTotalAverage =0f
-        if(element.isWeightageEnabled) {
-            for(j in 0 until userDeets.size) {
+        if (element.isWeightageEnabled) {
+            for (j in 0 until userDeets.size) {
                 for (k in userDeets[j].assignments.assignmentName) {
                     println(k)
-                    println("Give Your Rating(1-5):")
-                    val getRating = scan.nextInt()
-                    if(getRating<=0||getRating>5){
-                        println("You can only give ratings from 1 to 5. Please give a Valid Rating!")
-                        calculateAssignmentsTotalAverage(element)
-                    }
-                    else {
-                        var tempWeightage = userDeets[j].assignments.weightage[j]
-                        tempWeightageSumOfAssignments += tempWeightage
-                        var weightageProduct = getRating.times(tempWeightage)
-                        totalPeerRating += weightageProduct
-                    }
+                    var getRating = getRatingInput()
+                    var tempWeightage = userDeets[j].assignments.weightage[j]
+                    tempWeightageSumOfAssignments += tempWeightage
+                    var weightageProduct = getRating.times(tempWeightage)
+                    totalPeerRating += weightageProduct
                 }
                 SelfEvaluation.assignmentsTotalAverage = totalPeerRating / tempWeightageSumOfAssignments
                 println("Total Assignments Rating:${assignmentsTotalAverage}")
                 break
             }
-        }
-        else {
-            for(j in 0 until userDeets.size) {
+        } else {
+            for (j in 0 until userDeets.size) {
                 for (k in userDeets[j].assignments.assignmentName) {
                     println(k)
-                    println("Give Your Rating(1-5):")
-                    val getRating = scan.nextInt()
-                    if(getRating<=0||getRating>5){
-                        println("You can only give ratings from 1 to 5. Please give a Valid Rating!")
-                        calculateAssignmentsTotalAverage(element)
-                    }
-                    else {
-                        totalPeerRating += getRating
-                    }
+                    var getRating = getRatingInput()
+                    totalPeerRating += getRating
                 }
-                var totalNoOfAssignments=userDeets[j].assignments.assignmentName.size
+                var totalNoOfAssignments = userDeets[j].assignments.assignmentName.size
                 assignmentsTotalAverage = (totalPeerRating / totalNoOfAssignments)
                 println("Total Assignments Rating:${assignmentsTotalAverage}")
                 break
@@ -434,45 +403,31 @@ object PeerEvaluation {
 
     private fun calculateGoalsTotalAverage(element: CycleData) {
         var tempWeightageSumOfGoals = 0f
-        var totalPeerRating=0f
+        var totalPeerRating = 0f
 
         if (element.isWeightageEnabled) {
-            for(j in 0 until userDeets.size) {
+            for (j in 0 until userDeets.size) {
                 for (k in userDeets[j].goals.goalName) {
                     println(k)
-                    println("Give Your Rating(1-5):")
-                    var getRating= scan.nextInt()
-                    if(getRating<=0||getRating>5){
-                        println("You can only give ratings from 1 to 5. Please give a Valid Rating!")
-                        calculateGoalsTotalAverage(element)
-                    }
-                    else {
-                        var tempWeightage = userDeets[j].goals.weightage[j]
-                        tempWeightageSumOfGoals += tempWeightage
-                        var weightageProduct = getRating.times(tempWeightage)
-                        totalPeerRating += weightageProduct
-                    }
+                    var getRating = getRatingInput()
+                    var tempWeightage = userDeets[j].goals.weightage[j]
+                    tempWeightageSumOfGoals += tempWeightage
+                    var weightageProduct = getRating.times(tempWeightage)
+                    totalPeerRating += weightageProduct
                 }
                 goalsTotalAverage = totalPeerRating / tempWeightageSumOfGoals
                 println("Total Goals Rating:$goalsTotalAverage")
                 break
             }
         } else {
-            for(j in 0..userDeets.size) {
+            for (j in 0..userDeets.size) {
                 for (k in userDeets[j].goals.goalName) {
                     println(k)
-                    println("Give Your Rating(1-5):")
-                    val getRating = scan.nextInt()
-                    if(getRating<=0||getRating>5){
-                        println("You can only give ratings from 1 to 5. Please give a Valid Rating!")
-                        calculateGoalsTotalAverage(element)
-                    }
-                    else {
-                        totalPeerRating += getRating
-                    }
+                    var getRating = getRatingInput()
+                    totalPeerRating += getRating
                 }
                 var totalNoOfGoals = userDeets[j].goals.goalName.size
-                goalsTotalAverage = (totalPeerRating / totalNoOfGoals).toFloat()
+                goalsTotalAverage = (totalPeerRating / totalNoOfGoals)
                 println("Total Goals Rating:$goalsTotalAverage")
                 break
             }
@@ -488,7 +443,7 @@ object PeerEvaluation {
         var totalGoalsEnabledCount = 0
         var totalAssignmentsEnabledCount = 0
         var totalProjectsEnabledCount = 0
-        for(i in 0 until userDeets.size) { //for(i in 0..userDeets.size()) ->>try this
+        for (i in 0 until userDeets.size) { //for(i in 0..userDeets.size()) ->>try this
             for (element in SelfEvaluation.cycles) {
                 if (element.isGoalsEnabled) {
                     totalGoalsEnabledCount = userDeets[i].goals.goalName.size
@@ -518,20 +473,20 @@ object PeerEvaluation {
         var totalGoalsEnabledCount = 0
         var totalAssignmentsEnabledCount = 0
         var totalProjectsEnabledCount = 0
-        for(i in 0 until userDeets.size) { //for(i in 0..userDeets.size()) ->>try this
+        for (i in 0 until userDeets.size) { //for(i in 0..userDeets.size()) ->>try this
             for (element in SelfEvaluation.cycles) {
                 if (element.isGoalsEnabled) {
-                    totalGoalsEnabledCount = (userDeets[i].goals.goalName.size)- goalsNACount
+                    totalGoalsEnabledCount = (userDeets[i].goals.goalName.size) - goalsNACount
                     actualGoalsScore = goalsTotalAverage / totalGoalsEnabledCount
                 }
 
                 if (element.isAssignmentsEnabled) {
-                    totalAssignmentsEnabledCount = (userDeets[i].assignments.assignmentName.size)- assignmentsNACount
+                    totalAssignmentsEnabledCount = (userDeets[i].assignments.assignmentName.size) - assignmentsNACount
                     actualAssignmentsScore = assignmentsTotalAverage / totalAssignmentsEnabledCount
                 }
 
                 if (element.isProjectsEnabled) {
-                    totalProjectsEnabledCount = (userDeets[i].projects.projectName.size)- projectsNACount
+                    totalProjectsEnabledCount = (userDeets[i].projects.projectName.size) - projectsNACount
                     actualProjectsScore = projectsTotalAverage / totalProjectsEnabledCount
                 }
             }
@@ -539,7 +494,11 @@ object PeerEvaluation {
         calculateFinalSelfRatingScore(actualGoalsScore, actualAssignmentsScore, actualProjectsScore)
     }
 
-    private fun calculateFinalSelfRatingScore(actualGoalsScore: Float, actualAssignmentsScore: Float, actualProjectsScore: Float) {
+    private fun calculateFinalSelfRatingScore(
+        actualGoalsScore: Float,
+        actualAssignmentsScore: Float,
+        actualProjectsScore: Float
+    ) {
         finalPeerRatingScore = actualGoalsScore + actualAssignmentsScore + actualProjectsScore
         println("\n\nFINAL RATING SCORE: %.1f".format(finalPeerRatingScore))
         set.setFinalStatus(finalPeerRatingScore)

@@ -3,22 +3,22 @@ package com.application.performanceanalysis
 object RatingFactors {
 
     //GOALS
-    var akonGoalsList=ArrayList<String>()
-    var akonGoalWeightageList=ArrayList<Int>()
+    var akonGoalsList = ArrayList<String>()
+    var akonGoalWeightageList = ArrayList<Int>()
 
-    var bkonGoalsList=ArrayList<String>()
-    var bkonGoalWeightageList=ArrayList<Int>()
+    var bkonGoalsList = ArrayList<String>()
+    var bkonGoalWeightageList = ArrayList<Int>()
 
-    var ckonGoalsList=ArrayList<String>()
-    var ckonGoalWeightageList=ArrayList<Int>()
+    var ckonGoalsList = ArrayList<String>()
+    var ckonGoalWeightageList = ArrayList<Int>()
 
-    var dkonGoalsList=ArrayList<String>()
-    var dkonGoalWeightageList=ArrayList<Int>()
+    var dkonGoalsList = ArrayList<String>()
+    var dkonGoalWeightageList = ArrayList<Int>()
 
-    var ekonGoalsList=ArrayList<String>()
-    var ekonGoalWeightageList=ArrayList<Int>()
+    var ekonGoalsList = ArrayList<String>()
+    var ekonGoalWeightageList = ArrayList<Int>()
 
-    fun addGoalsData(){
+    fun addGoalsData() {
 
         akonGoalsList.add("1.Learn Kotlin")
         akonGoalsList.add("2.Learn Espresso")
@@ -58,22 +58,22 @@ object RatingFactors {
 
     }
 
-    var akonAssignmentsList=ArrayList<String>()
-    var akonAssignmentWeightageList=ArrayList<Int>()
+    var akonAssignmentsList = ArrayList<String>()
+    var akonAssignmentWeightageList = ArrayList<Int>()
 
-    var bkonAssignmentsList=ArrayList<String>()
-    var bkonAssignmentWeightageList=ArrayList<Int>()
+    var bkonAssignmentsList = ArrayList<String>()
+    var bkonAssignmentWeightageList = ArrayList<Int>()
 
-    var ckonAssignmentsList=ArrayList<String>()
-    var ckonAssignmentWeightageList=ArrayList<Int>()
+    var ckonAssignmentsList = ArrayList<String>()
+    var ckonAssignmentWeightageList = ArrayList<Int>()
 
-    var dkonAssignmentsList=ArrayList<String>()
-    var dkonAssignmentWeightageList=ArrayList<Int>()
+    var dkonAssignmentsList = ArrayList<String>()
+    var dkonAssignmentWeightageList = ArrayList<Int>()
 
-    var ekonAssignmentsList=ArrayList<String>()
-    var ekonAssignmentWeightageList=ArrayList<Int>()
+    var ekonAssignmentsList = ArrayList<String>()
+    var ekonAssignmentWeightageList = ArrayList<Int>()
 
-    fun addAssignmentData(){
+    fun addAssignmentData() {
 
         akonAssignmentsList.add("1.Logical Programs Exercise")
         akonAssignmentsList.add("2.Test Case Writing")
@@ -113,22 +113,22 @@ object RatingFactors {
 
     }
 
-    var akonProjectList=ArrayList<String>()
-    var akonProjectWeightageList=ArrayList<Int>()
+    var akonProjectList = ArrayList<String>()
+    var akonProjectWeightageList = ArrayList<Int>()
 
-    var bkonProjectList=ArrayList<String>()
-    var bkonProjectWeightageList=ArrayList<Int>()
+    var bkonProjectList = ArrayList<String>()
+    var bkonProjectWeightageList = ArrayList<Int>()
 
-    var ckonProjectList=ArrayList<String>()
-    var ckonProjectWeightageList=ArrayList<Int>()
+    var ckonProjectList = ArrayList<String>()
+    var ckonProjectWeightageList = ArrayList<Int>()
 
-    var dkonProjectList=ArrayList<String>()
-    var dkonProjectWeightageList=ArrayList<Int>()
+    var dkonProjectList = ArrayList<String>()
+    var dkonProjectWeightageList = ArrayList<Int>()
 
-    var ekonProjectList=ArrayList<String>()
-    var ekonProjectWeightageList=ArrayList<Int>()
+    var ekonProjectList = ArrayList<String>()
+    var ekonProjectWeightageList = ArrayList<Int>()
 
-    fun addProjectsData(){
+    fun addProjectsData() {
 
         akonProjectList.add("1.Performance Analysis Module")
         akonProjectList.add("2.Leave Tracker Module")
